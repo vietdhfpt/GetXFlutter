@@ -44,6 +44,33 @@ class TopupPaymentResult extends StatelessWidget {
                   scrollDirection: Axis.vertical,
                   itemCount: cards.length,
                   itemBuilder: (context, index) {
+                    // if (index == cards.length) {
+                    //   return Container(
+                    //     height: 50,
+                    //     decoration: BoxDecoration(
+                    //       color: Colors.white,
+                    //       borderRadius: BorderRadius.circular(kBorderRadius),
+                    //     ),
+                    //     child: Row(
+                    //       mainAxisAlignment: MainAxisAlignment.center,
+                    //       children: [
+                    //         Icon(
+                    //           Icons.share,
+                    //           color: appColor,
+                    //         ),
+                    //         SizedBox(width: kPaddingTopup / 2),
+                    //         Text(
+                    //           'Chia sẻ',
+                    //           style: TextStyle(
+                    //             color: appColor,
+                    //             fontWeight: FontWeight.bold,
+                    //             fontSize: 18,
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   );
+                    // }
                     return Container(
                       margin: EdgeInsets.only(bottom: kPaddingTopup),
                       height: 80,
@@ -115,11 +142,31 @@ class TopupPaymentResult extends StatelessWidget {
                   bottom: kPaddingTopup * 2,
                 ),
                 child: Container(
-                  child: TopupButtonWidget(
-                    title: 'Màn hình chính',
-                    onTap: () {
-                      Get.offAll(HomePage());
-                    },
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TopupButtonWidget(
+                          title: 'Màn hình chính',
+                          onTap: () {
+                            Get.offAll(HomePage());
+                          },
+                        ),
+                      ),
+                      SizedBox(width: kPaddingTopup / 2),
+                      Container(
+                        width: 60,
+                        decoration: BoxDecoration(
+                          color: appColor,
+                          borderRadius: BorderRadius.circular(kBorderRadius),
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.share,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
