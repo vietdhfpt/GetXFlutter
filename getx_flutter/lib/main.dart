@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:getx_flutter/constants.dart';
 import 'package:getx_flutter/manager_bindings.dart';
 import 'package:getx_flutter/pages/home/home_page.dart';
 import 'package:getx_flutter/pages/register/register_page.dart';
@@ -17,10 +18,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter GetX',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      theme: theme,
       getPages: [
         GetPage(
           name: '/topupPaymentDetail',

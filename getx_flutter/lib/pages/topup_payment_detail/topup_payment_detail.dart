@@ -13,6 +13,7 @@ class TopupPaymentDetail extends StatelessWidget {
     final product = Get.arguments['product'];
     final quantity = Get.arguments['quantity'];
     final totalAmount = Get.arguments['amount'];
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Chi tiết giao dịch'),
@@ -120,7 +121,7 @@ class TopupPaymentDetail extends StatelessWidget {
               title: 'Xác nhận',
               onTap: () {
                 _controller.cratchCardPayment(
-                  productId: product.id,
+                  product: product,
                   quantity: quantity,
                 );
               },
