@@ -93,7 +93,7 @@ class HistoryPage extends StatelessWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            'Viettel - $index',
+                                            'Viettel',
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.black,
@@ -103,8 +103,8 @@ class HistoryPage extends StatelessWidget {
                                           Text(
                                             '$totalAmountđ',
                                             style: TextStyle(
-                                              color:
-                                                  _getItemColor(history.status),
+                                              color: controller
+                                                  .getItemColor(history.status),
                                               fontWeight: FontWeight.bold,
                                               fontSize: 14,
                                             ),
@@ -116,15 +116,17 @@ class HistoryPage extends StatelessWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            _convertTimeStampToStringDate(
-                                                history.createdAt),
+                                            controller
+                                                .convertTimeStampToStringDate(
+                                                    history.createdAt),
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 12,
                                             ),
                                           ),
                                           Text(
-                                            _getItemStatus(history.status),
+                                            controller
+                                                .getItemStatus(history.status),
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 12,
@@ -159,32 +161,5 @@ class HistoryPage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Color _getItemColor(Message status) {
-    switch (status) {
-      case Message.SUCCESS:
-        return Colors.green[400];
-      case Message.REFUNDED:
-        return Colors.grey;
-      default:
-        return Colors.red[200];
-    }
-  }
-
-  String _getItemStatus(Message status) {
-    switch (status) {
-      case Message.SUCCESS:
-        return 'Thành công'; //'Success';
-      case Message.REFUNDED:
-        return 'Hoàn lại'; //'Refunded';
-      default:
-        return 'Không thành công'; //'Failed';
-    }
-  }
-
-  String _convertTimeStampToStringDate(int timestamp) {
-    final date = new DateTime.fromMicrosecondsSinceEpoch(timestamp * 1000);
-    return DateFormat('HH:mm dd/MM/yyyy').format(date);
   }
 }
