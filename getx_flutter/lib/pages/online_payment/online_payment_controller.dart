@@ -64,10 +64,7 @@ class OnlinePaymentController extends GetxController {
       'quantity': quantity,
       'amount': amount
     };
-    Get.to(
-      TopupPaymentDetail(),
-      arguments: arguments,
-    );
+    Get.to(() => TopupPaymentDetail(), arguments: arguments);
   }
 
   void processCalculateMoney({@required bool isIncrement}) {

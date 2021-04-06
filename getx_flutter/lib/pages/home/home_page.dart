@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_flutter/constants.dart';
+import 'package:getx_flutter/pages/history/history_page.dart';
 import 'package:getx_flutter/pages/home/home_controller.dart';
 import 'package:getx_flutter/pages/online_payment/online_payment_page.dart';
 
@@ -46,7 +47,7 @@ class HomePage extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 children: [
                   OnlinePaymentPage(),
-                  Container(color: topupBackGroundColor),
+                  HistoryPage(),
                 ],
               ),
             ),

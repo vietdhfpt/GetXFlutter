@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_flutter/constants.dart';
@@ -109,10 +110,7 @@ class TopupPaymentDetail extends StatelessWidget {
                 child: Container(
                   width: 24,
                   height: 24,
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    strokeWidth: 3,
-                  ),
+                  child: CupertinoActivityIndicator(),
                 ),
               ),
             );

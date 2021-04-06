@@ -148,7 +148,7 @@ class TopupPaymentResult extends StatelessWidget {
                         child: TopupButtonWidget(
                           title: 'Màn hình chính',
                           onTap: () {
-                            Get.offAll(HomePage());
+                            Get.off(() => HomePage());
                           },
                         ),
                       ),

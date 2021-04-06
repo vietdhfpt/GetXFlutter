@@ -19,7 +19,7 @@ class RegisterController extends GetxController with StateMixin<TopupRegister> {
       GetStorage tokenStorage = GetStorage();
       tokenStorage.write('TOPUP_TOKEN', topupResponse.data);
       change(topupResponse, status: RxStatus.success());
-      Get.off(() => HomePage());
+      Get.off(HomePage());
     } else
       change(null, status: RxStatus.empty());
   }
