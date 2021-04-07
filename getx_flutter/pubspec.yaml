@@ -37,6 +37,7 @@ dependencies:
   flutter_staggered_grid_view:
   lottie:
   intl:
+  flutter_datetime_picker:
 
 dev_dependencies:
   flutter_test:

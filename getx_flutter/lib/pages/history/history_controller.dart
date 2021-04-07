@@ -7,25 +7,53 @@ import 'package:intl/intl.dart';
 class HistoryController extends GetxController {
   var _isLoading = false.obs;
   List<Datum> _histories = List<Datum>().obs;
+  var _fromDate = 0.obs;
+  var _toDate = 0.obs;
+  var _isNodataAvailable = false.obs;
 
   bool get isLoading => _isLoading.value;
   List<Datum> get histories => _histories;
+  int get fromDate => _fromDate.value;
+  int get toDate => _toDate.value;
+  bool get isNodataAvailable => _isNodataAvailable.value;
 
   @override
   void onInit() {
+    _setDefaultDate();
     _recieveHistory(
-        fromDate: '2021-04-03 00:00:00', toDate: '2021-04-06 00:00:00');
+      fromDate: _fromDate.value,
+      toDate: _toDate.value,
+    );
     super.onInit();
   }
 
-  void _recieveHistory({String fromDate, String toDate}) async {
+  void _setDefaultDate() {
+    _fromDate.value = DateTime(2021, 01, 01, 00, 00).millisecondsSinceEpoch;
+    _toDate.value = DateTime.now().millisecondsSinceEpoch;
+  }
+
+  void setDate(DateTime date, bool isFromDate) {
+    final result = date.millisecondsSinceEpoch;
+    if (isFromDate)
+      _fromDate.value = result;
+    else
+      _toDate.value = result;
+
+    _recieveHistory(fromDate: _fromDate.value, toDate: _toDate.value);
+  }
+
+  void _recieveHistory({int fromDate, int toDate}) async {
     try {
       _isLoading.value = true;
       final historyResp =
           await TopupRepository.instance.getHistories(fromDate, toDate);
       if (historyResp != null) {
-        _histories.addAll(historyResp.data);
+        _histories.clear();
+        final newHistory =
+            historyResp.data.where((i) => i.status != Message.FAILED).toList();
+        _histories.addAll(newHistory);
       }
+      _isNodataAvailable.value = histories.isEmpty;
     } finally {
       _isLoading.value = false;
     }
@@ -35,8 +63,6 @@ class HistoryController extends GetxController {
     switch (status) {
       case Message.SUCCESS:
         return Colors.green[400];
-      case Message.REFUNDED:
-        return Colors.grey;
       default:
         return Colors.red[200];
     }
@@ -46,15 +72,14 @@ class HistoryController extends GetxController {
     switch (status) {
       case Message.SUCCESS:
         return 'Thành công'; //'Success';
-      case Message.REFUNDED:
-        return 'Hoàn lại'; //'Refunded';
       default:
-        return 'Không thành công'; //'Failed';
+        return 'Hoàn lại';
     }
   }
 
   String convertTimeStampToStringDate(int timestamp) {
-    final date = new DateTime.fromMicrosecondsSinceEpoch(timestamp * 1000);
-    return DateFormat('HH:mm dd/MM/yyyy').format(date);
+    final date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    final DateFormat formatter = DateFormat('dd/MM/yyyy HH:mm');
+    return formatter.format(date);
   }
 }

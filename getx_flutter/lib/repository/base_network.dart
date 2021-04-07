@@ -6,7 +6,7 @@ import 'package:getx_flutter/services/bloc_response.dart';
 
 const TOPUP_BASE_URL = 'https://api.nssvndev.com';
 const String token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhfVTNjTUNFUW8iLCJzaG9waWQiOiJmZmYxNmJkZi0zOGJhLTQyNTMtYWY5OC1lZWYyZDliZjY2NzkiLCJpc01lcmNoYW50Ijp0cnVlLCJpYXQiOjE2MTcxNzg2MjR9.ExOVIiiwbjJgSjVv_4JpuLECst-IO-CHT4bYLFb3oeo';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ilg1QUVHc2ItZjAiLCJzaG9waWQiOiI4ODg4ODg4OCIsImlzTWVyY2hhbnQiOnRydWUsImlhdCI6MTYxNzc4MjE5OH0.CbLoJH0Yn5vaGsPHGAwTJb3uxz9uVAYdkll1E0DwpLA';
 
 class BaseNetwork {
   static Future<BlocResponse> get(String partUrl) async {
@@ -28,8 +28,6 @@ class BaseNetwork {
 
     // GetStorage tokenStorage = GetStorage();
     // String token = tokenStorage.read('TOPUP_TOKEN');
-    String token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhfVTNjTUNFUW8iLCJzaG9waWQiOiJmZmYxNmJkZi0zOGJhLTQyNTMtYWY5OC1lZWYyZDliZjY2NzkiLCJpc01lcmNoYW50Ijp0cnVlLCJpYXQiOjE2MTcxNzg2MjR9.ExOVIiiwbjJgSjVv_4JpuLECst-IO-CHT4bYLFb3oeo';
     _dio.options.headers["Authorization"] = "Bearer $token";
 
     try {
@@ -64,8 +62,6 @@ class BaseNetwork {
     if (!isRegister) {
       // GetStorage tokenStorage = GetStorage();
       // String token = tokenStorage.read('TOPUP_TOKEN');
-      String token =
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhfVTNjTUNFUW8iLCJzaG9waWQiOiJmZmYxNmJkZi0zOGJhLTQyNTMtYWY5OC1lZWYyZDliZjY2NzkiLCJpc01lcmNoYW50Ijp0cnVlLCJpYXQiOjE2MTcxNzg2MjR9.ExOVIiiwbjJgSjVv_4JpuLECst-IO-CHT4bYLFb3oeo';
       _dio.options.headers["Authorization"] = "Bearer $token";
     }
 

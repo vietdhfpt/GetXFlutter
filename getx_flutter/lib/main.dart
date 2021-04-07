@@ -6,6 +6,7 @@ import 'package:getx_flutter/pages/home/home_page.dart';
 import 'package:getx_flutter/pages/register/register_page.dart';
 import 'package:getx_flutter/pages/root/root.dart';
 import 'package:getx_flutter/pages/topup_payment_detail/topup_payment_detail.dart';
+import 'package:getx_flutter/pages/topup_payment_result/topup_result_payment.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,13 +20,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter GetX',
       debugShowCheckedModeBanner: false,
       theme: theme,
-      getPages: [
-        GetPage(
-          name: '/topupPaymentDetail',
-          page: () => TopupPaymentDetail(),
-          binding: ManagerBindings(),
-        ),
-      ],
+      getPages: [],
       home: HomePage(),
     );
   }

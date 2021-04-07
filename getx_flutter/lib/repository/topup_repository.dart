@@ -57,19 +57,10 @@ class TopupRepository {
         return null;
     }
   }
-  
-  // Get Histories
-  // Parameters 1: - from is from date format yyyy-MM-dd hh:mm:ss
-  // Parameters 2: - to is to date format yyyy-MM-dd hh:mm:ss
-  // Return: Topup History Response
-  Future<TopupHistoryResp> getHistories(String from, String to) async {
-    DateTime fromDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse(from);
-    final fromDateTimeStamp = fromDate.millisecondsSinceEpoch;
-    DateTime toDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse(to);
-    final toDateTimeStamp = toDate.millisecondsSinceEpoch;
-    BlocResponse response =
-        await BaseNetwork.get('/topup/transactions?from=$fromDateTimeStamp&to=$toDateTimeStamp');
 
+  Future<TopupHistoryResp> getHistories(int from, int to) async {
+    BlocResponse response =
+        await BaseNetwork.get('/topup/transactions?from=$from&to=$to');
     switch (response.status) {
       case BlocResponseStatus.COMPLETED:
         return TopupHistoryResp.fromJson(response.data);
