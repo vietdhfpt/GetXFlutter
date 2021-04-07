@@ -73,11 +73,14 @@ class HistoryPage extends StatelessWidget {
       child: ListView.builder(
         itemCount: controller.histories.length,
         itemBuilder: (context, index) {
+          // Check transaction is pay balance to wallet
+          controller.getHistoryPayBalance(index);
+
           final history = controller.histories[index];
           final amount = history.status == Message.REFUNDED
               ? history.info.refundAmount
-              : history.info.merchant == null
-                  ? 0
+              : history.requestParams.buyItems == null
+                  ? history.requestParams.amount
                   : history.info.merchant.price;
           final quantity = history.requestParams.buyItems == null
               ? 1

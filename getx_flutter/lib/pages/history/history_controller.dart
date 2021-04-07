@@ -10,12 +10,14 @@ class HistoryController extends GetxController {
   var _fromDate = 0.obs;
   var _toDate = 0.obs;
   var _isNodataAvailable = false.obs;
+  var _isPayBalance = false.obs;
 
   bool get isLoading => _isLoading.value;
   List<Datum> get histories => _histories;
   int get fromDate => _fromDate.value;
   int get toDate => _toDate.value;
   bool get isNodataAvailable => _isNodataAvailable.value;
+  bool get isPayBalance => _isPayBalance.value;
 
   @override
   void onInit() {
@@ -25,6 +27,10 @@ class HistoryController extends GetxController {
       toDate: _toDate.value,
     );
     super.onInit();
+  }
+
+  void getHistoryPayBalance(int index) {
+    _isPayBalance.value = histories[index].requestParams.buyItems == null;
   }
 
   void _setDefaultDate() {
@@ -49,9 +55,7 @@ class HistoryController extends GetxController {
           await TopupRepository.instance.getHistories(fromDate, toDate);
       if (historyResp != null) {
         _histories.clear();
-        final newHistory =
-            historyResp.data.where((i) => i.status != Message.FAILED).toList();
-        _histories.addAll(newHistory);
+        _histories.addAll(historyResp.data);
       }
       _isNodataAvailable.value = histories.isEmpty;
     } finally {
@@ -63,6 +67,8 @@ class HistoryController extends GetxController {
     switch (status) {
       case Message.SUCCESS:
         return Colors.green[400];
+      case Message.REFUNDED:
+        return Colors.grey[400];
       default:
         return Colors.red[200];
     }
@@ -71,9 +77,11 @@ class HistoryController extends GetxController {
   String getItemStatus(Message status) {
     switch (status) {
       case Message.SUCCESS:
-        return 'Thành công'; //'Success';
-      default:
+        return isPayBalance ? 'Nạp tiền vào ví' : 'Thành công';
+      case Message.REFUNDED:
         return 'Hoàn lại';
+      default:
+        return 'Giao dịch lỗi';
     }
   }
 
