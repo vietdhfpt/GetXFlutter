@@ -51,7 +51,9 @@ class TopupProviderWidget extends StatelessWidget {
                                 color: controller.selectedIndexProvider == index
                                     ? appColor
                                     : Colors.grey[300],
-                                width: 2.5,
+                                width: controller.selectedIndexProvider == index
+                                    ? 2.5
+                                    : 1.5,
                               ),
                             ),
                             width: 90,

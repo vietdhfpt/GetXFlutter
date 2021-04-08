@@ -55,7 +55,9 @@ class TopupProductWidget extends StatelessWidget {
                             color: controller.selectedIndexProduct == index
                                 ? appColor
                                 : Colors.grey[300],
-                            width: 2.5,
+                            width: controller.selectedIndexProduct == index
+                                ? 2.5
+                                : 1.5,
                           ),
                         ),
                         child: Column(
