@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_flutter/models/topup_history.dart';
 import 'package:getx_flutter/repository/topup_repository.dart';
+import 'package:getx_flutter/sp_snackar.dart';
 import 'package:intl/intl.dart';
 
 class HistoryController extends GetxController {
@@ -29,7 +30,7 @@ class HistoryController extends GetxController {
     super.onInit();
   }
 
-  void getHistoryPayBalance(int index) {
+  void setHistoryPayBalance(int index) {
     _isPayBalance.value = histories[index].requestParams.buyItems == null;
   }
 
@@ -49,6 +50,10 @@ class HistoryController extends GetxController {
   }
 
   void _recieveHistory({int fromDate, int toDate}) async {
+    if (!_compareTimeValid(fromDate, toDate)) {
+      SPSnackbar.instance.show(message: 'Thời gian không hợp lệ. Mời chọn lại');
+      return;
+    }
     try {
       _isLoading.value = true;
       final historyResp =
@@ -61,6 +66,10 @@ class HistoryController extends GetxController {
     } finally {
       _isLoading.value = false;
     }
+  }
+
+  bool _compareTimeValid(int fromTimestamp, int toTimestamp) {
+    return fromTimestamp < toTimestamp;
   }
 
   Color getItemColor(Message status) {

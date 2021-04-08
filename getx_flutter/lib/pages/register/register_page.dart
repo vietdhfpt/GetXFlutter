@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_flutter/pages/register/register_controller.dart';
-import 'package:getx_flutter/sp_snackar.dart';
 
 class RegisterPage extends GetView<RegisterController> {
   @override
