@@ -27,7 +27,7 @@ class TopupWidget extends GetView<OnlinePaymentController> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
-                      color: controller.selectedIndex == index
+                      color: controller.selectedIndexTopup == index
                           ? appColor
                           : Colors.white,
                       width: 2,
