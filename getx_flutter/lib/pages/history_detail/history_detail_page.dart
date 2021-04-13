@@ -3,15 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_flutter/constants.dart';
 import 'package:getx_flutter/models/topup_history.dart';
-import 'package:getx_flutter/pages/history/history_controller.dart';
-import 'package:getx_flutter/pages/history_detail/history_detail_controller.dart';
+import 'package:getx_flutter/pages/online_payment/online_payment_controller.dart';
 import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class HistoryDetailPage extends StatelessWidget {
   Datum data;
-  final HistoryDetailController _controller =
-      Get.put(HistoryDetailController());
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +108,7 @@ class HistoryDetailPage extends StatelessWidget {
                     value: convertTimeStampToStringDate(data.createdAt)),
                 Divider(height: 1, color: Colors.black26),
                 _buildInfoCell(title: 'Nhà cung cấp', value: 'Viettel'),
+                _contentPayMobile(),
                 Divider(height: 1, color: Colors.black26),
                 _buildInfoCell(title: 'Phí giao dịch', value: 'Miễn phí'),
                 Divider(height: 1, color: Colors.black26),
@@ -193,15 +191,35 @@ class HistoryDetailPage extends StatelessWidget {
   }
 
   Widget _contentQuantityAndDiscount() {
+    final quantity = data.requestParams.buyItems == null
+        ? 0
+        : data.requestParams.buyItems[0].quantity;
+    return Column(
+      children: [
+        if (data.requestParams.buyItems != null)
+          Divider(height: 1, color: Colors.black26),
+        if (data.requestParams.buyItems != null)
+          _buildInfoCell(title: 'Số lượng', value: '$quantity'),
+        Divider(height: 1, color: Colors.black26),
+        _buildInfoCell(
+            title: 'Giảm giá', value: '${data.info.merchant.profit}'),
+      ],
+    );
+  }
+
+  Widget _contentPayMobile() {
+    if (data.requestParams.accountType != '0') return Container();
+    final accountTypeText =
+        data.requestParams.accountType == '0' ? 'Trả trước' : 'Trả sau';
     return Column(
       children: [
         Divider(height: 1, color: Colors.black26),
         _buildInfoCell(
-            title: 'Số lượng',
-            value: '${data.requestParams.buyItems[0].quantity}'),
+            title: 'Số điện thoại',
+            value:
+                '${data.requestParams.targetAccount.isEmpty ? null : data.requestParams.targetAccount}'),
         Divider(height: 1, color: Colors.black26),
-        _buildInfoCell(
-            title: 'Giảm giá', value: '${data.info.merchant.profit}'),
+        _buildInfoCell(title: 'Hình thức', value: '$accountTypeText'),
       ],
     );
   }
@@ -306,7 +324,7 @@ class HistoryDetailPage extends StatelessWidget {
             ? 'Nạp tiền vào ví thành công'
             : 'Giao dịch thành công';
       case Message.FAILED:
-        return errorMessageValues.reverse[data.responseData.errorMessage];
+        return errorMessageValues.reverse[data.responseData.errorMessage] ?? '';
       default:
         return 'Hoàn tiền thành công';
     }

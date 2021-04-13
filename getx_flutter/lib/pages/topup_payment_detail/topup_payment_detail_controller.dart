@@ -32,12 +32,51 @@ class TopupPaymentDetailController extends GetxController {
     }
   }
 
+  void mobilePayment({
+    @required String phone,
+    @required String provider,
+    @required int amount,
+    @required String accountType,
+  }) async {
+    try {
+      _isLoading.value = true;
+      final topupMobilePayResp = await TopupRepository.instance.paymentMobile(
+        phone: phone,
+        provider: provider,
+        amount: amount,
+        accountType: accountType,
+      );
+      if (topupMobilePayResp != null) {
+        OnlinePaymentController paymentController = Get.find();
+        paymentController
+            .reloadBalance(topupMobilePayResp.data.merchantBalance);
+        _showMobilePayResult(topupMobilePayResp, phone, amount);
+      }
+    } finally {
+      _isLoading.value = false;
+    }
+  }
+
   void _showTopupResult(
       dynamic topupCratchCardResp, dynamic respProduct, dynamic quantity) {
     final arguments = <String, dynamic>{
       'product': respProduct,
       'topupCratchCardResp': topupCratchCardResp,
       'quantity': quantity,
+    };
+    Get.offAll(
+      () => TopupPaymentResult(),
+      arguments: arguments,
+      popGesture: false,
+    );
+  }
+
+  void _showMobilePayResult(
+      dynamic topupMobilePayResp, String phone, int amount) {
+    final arguments = <String, dynamic>{
+      'topupPayMobileResp': topupMobilePayResp,
+      'phoneNumber': phone,
+      'amount': amount,
     };
     Get.offAll(
       () => TopupPaymentResult(),

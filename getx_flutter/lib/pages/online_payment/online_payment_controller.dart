@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_flutter/models/topup_product.dart';
 import 'package:getx_flutter/pages/online_payment/model/topup.dart';
@@ -27,7 +28,10 @@ class OnlinePaymentController extends GetxController {
   RxInt _selectedIndexProduct = 0.obs;
   RxInt _quantity = 1.obs;
   RxInt _accountType = 0.obs;
+  RxBool _isInputQuantity = false.obs;
   var _topups = List<Topup>().obs;
+  var _currentlyProducts = List<Item>().obs;
+  var _currentlyProviders = List<TopupItem>().obs;
 
   // Cratch Cards
   var _viettelCratchCards = List<Item>().obs;
@@ -36,7 +40,6 @@ class OnlinePaymentController extends GetxController {
   var _vietnamobileCratchCards = List<Item>().obs;
   var _beelineCratchCards = List<Item>().obs;
   var _cratchCards = List<TopupItem>().obs;
-  var _currentlyProducts = List<Item>().obs;
 
   // Cratch Cards
   var _viettelPayMobiles = List<Item>().obs;
@@ -45,7 +48,6 @@ class OnlinePaymentController extends GetxController {
   var _vietnamobilePayMobiles = List<Item>().obs;
   var _beelinePayMobiles = List<Item>().obs;
   var _payMobiles = List<TopupItem>().obs;
-  var _currentlyPayMobilesProducts = List<Item>().obs;
 
   // Cratch Cards
   var _viettelAdvanceMobiles = List<Item>().obs;
@@ -54,12 +56,11 @@ class OnlinePaymentController extends GetxController {
   var _vietnamobileAdvanceMobiles = List<Item>().obs;
   var _beelineAdvanceMobiles = List<Item>().obs;
   var _advanceMobiles = List<TopupItem>().obs;
-  var _currentlyAdvanceMobilesProducts = List<Item>().obs;
 
   // Properties public
   List<Topup> get topups => _topups;
-  List<TopupItem> get cratchCards => _cratchCards;
   List<Item> get currentlyProducts => _currentlyProducts;
+  List<TopupItem> get currentlyProviders => _currentlyProviders;
   int get selectedIndexTopup => _selectedIndexTopup.value;
   int get amount => _amount.value;
   int get balance => _balance.value;
@@ -67,6 +68,8 @@ class OnlinePaymentController extends GetxController {
   int get selectedIndexProduct => _selectedIndexProduct.value;
   int get quantity => _quantity.value;
   int get accountType => _accountType.value;
+  bool get isInputQuantity => _isInputQuantity.value;
+  TextEditingController phoneNumberController = TextEditingController();
 
   @override
   void onInit() {
@@ -93,7 +96,9 @@ class OnlinePaymentController extends GetxController {
     var arguments = <String, dynamic>{
       'product': currentlyProducts[selectedIndexProduct],
       'quantity': quantity,
-      'amount': amount
+      'amount': amount,
+      if (selectedIndexTopup == 1) 'accountType': accountType,
+      if (selectedIndexTopup == 1) 'phoneNumber': phoneNumberController.text,
     };
     Get.to(() => TopupPaymentDetail(), arguments: arguments);
   }
@@ -117,16 +122,44 @@ class OnlinePaymentController extends GetxController {
   }
 
   void selectedTopup(int index) {
+    switch (index) {
+      case 0:
+        _isInputQuantity.value = true;
+        break;
+      default:
+        _isInputQuantity.value = false;
+        break;
+    }
     _topups.refresh();
     _selectedIndexTopup = RxInt(index);
+    selectedProvider(0);
     update();
   }
 
   void selectedProvider(int index) {
-    _cratchCards.refresh();
     _selectedIndexProvider = RxInt(index);
     _currentlyProducts.clear();
-    _currentlyProducts.addAll(_cratchCards[index].childs);
+    _currentlyProviders.clear();
+    switch (selectedIndexTopup) {
+      case 0:
+        _cratchCards.refresh();
+        _currentlyProducts.addAll(_cratchCards[index].childs);
+        _currentlyProviders.addAll(_cratchCards);
+        break;
+      case 1:
+        accountType == 0 ? _advanceMobiles.refresh() : _payMobiles.refresh();
+        _currentlyProducts.addAll(
+          accountType == 0
+              ? _advanceMobiles[index].childs
+              : _payMobiles[index].childs,
+        );
+        _currentlyProviders
+            .addAll(accountType == 0 ? _advanceMobiles : _payMobiles);
+        break;
+      default:
+        break;
+    }
+    // update();
     selectedProduct(0);
     _resetQuantity();
     _getMoney();
@@ -188,6 +221,7 @@ class OnlinePaymentController extends GetxController {
         _cratchCards.addAll(tempCratchCards);
 
         // Set the first time has data.
+        _currentlyProviders.addAll(_cratchCards);
         _currentlyProducts.addAll(_cratchCards[0].childs);
         _getMoney();
       });
@@ -322,7 +356,7 @@ class OnlinePaymentController extends GetxController {
   }
 
   Future _parsesPayMobile(TopupProduct response) async {
-    final payMobiles = response.data[0].items;
+    final payMobiles = response.data[3].items;
     for (var i = 0; i < payMobiles.length; i++) {
       var payMobile = payMobiles[i];
       switch (payMobile.providerName) {

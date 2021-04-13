@@ -329,18 +329,24 @@ class ResponseData {
 enum ErrorMessage {
   SUCCESS,
   TOKEN_IS_NOT_EXISTED,
+  FAIL_BECAUSE_PRODUCT_NOT_IN_PARTNER_TEMPLATE,
+  TARGET_ACCOUNT_INVALID,
   FAIL_BECAUSE_SOFTPIN_IS_NOT_ENOUGH_FOR_REQUEST,
   TELCO_SYSTEM_BUSY,
   INVALID_SIGNATURE
 }
 
 final errorMessageValues = EnumValues({
+  "fail because product not in partner template":
+      ErrorMessage.FAIL_BECAUSE_PRODUCT_NOT_IN_PARTNER_TEMPLATE,
+  "Target account is too short or too long":
+      ErrorMessage.TARGET_ACCOUNT_INVALID,
   "fail because softpin is not enough for request":
       ErrorMessage.FAIL_BECAUSE_SOFTPIN_IS_NOT_ENOUGH_FOR_REQUEST,
   "INVALID SIGNATURE": ErrorMessage.INVALID_SIGNATURE,
   "success": ErrorMessage.SUCCESS,
   "Telco system busy.": ErrorMessage.TELCO_SYSTEM_BUSY,
-  "Token is not existed.": ErrorMessage.TOKEN_IS_NOT_EXISTED
+  "Token is not existed.": ErrorMessage.TOKEN_IS_NOT_EXISTED,
 });
 
 class Product {

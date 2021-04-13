@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:getx_flutter/models/topup_history.dart';
+import 'package:getx_flutter/models/topup_mobile_pay.dart';
 import 'package:getx_flutter/models/topup_product.dart';
 import 'package:getx_flutter/models/topup_balance.dart';
 import 'package:getx_flutter/models/topup_cratch_card_resp.dart';
@@ -88,6 +89,33 @@ class TopupRepository {
     switch (response.status) {
       case BlocResponseStatus.COMPLETED:
         return TopupCratchCardResp.fromJson(response.data);
+      default:
+        SPSnackbar.instance.show(message: response.message);
+        return null;
+    }
+  }
+
+  Future<TopupMobilePay> paymentMobile({
+    @required String phone,
+    @required String provider,
+    @required int amount,
+    @required String accountType,
+  }) async {
+    final parameters = {
+      'targetAccount': phone,
+      'providerCode': provider,
+      'topupAmount': amount,
+      'accountType': accountType,
+    };
+
+    BlocResponse response = await BaseNetwork.post(
+      partUrl: '/topup/topup',
+      parameters: parameters,
+    );
+
+    switch (response.status) {
+      case BlocResponseStatus.COMPLETED:
+        return TopupMobilePay.fromJson(response.data);
       default:
         SPSnackbar.instance.show(message: response.message);
         return null;

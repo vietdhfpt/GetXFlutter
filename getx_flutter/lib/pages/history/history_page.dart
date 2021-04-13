@@ -76,19 +76,28 @@ class HistoryPage extends StatelessWidget {
             // Check transaction is pay balance to wallet
             controller.setHistoryPayBalance(index);
             final history = controller.histories[index];
-            final amount = history.status == Message.REFUNDED
-                ? history.info.refundAmount
-                : history.requestParams.buyItems == null
-                    ? history.requestParams.amount
-                    : history.info.merchant.price;
-            final quantity = history.requestParams.buyItems == null
-                ? 1
-                : history.requestParams.buyItems[0].quantity;
-            final totalAmount =
-                history.status == Message.REFUNDED ? amount : amount * quantity;
+            var amount;
+            switch (history.status) {
+              case Message.REFUNDED:
+                amount = history.info.refundAmount;
+                break;
+              case Message.SUCCESS:
+                if (history.requestParams.buyItems == null) {
+                  if (history.requestParams.topupAmount != null)
+                    amount = history.info.merchant.price;
+                  else
+                    amount = history.requestParams.amount;
+                } else {
+                  amount = history.info.merchant.price;
+                }
+                break;
+              default:
+                amount = history.info.totalAmount;
+                break;
+            }
 
             return _historyItem(
-              totalAmount,
+              amount,
               controller,
               history,
               onTap: () {
@@ -278,18 +287,5 @@ class HistoryPage extends StatelessWidget {
       currentTime: DateTime.now(),
       locale: LocaleType.en,
     );
-  }
-
-  int _getTotalAmount(Datum data) {
-    switch (data.status) {
-      case Message.SUCCESS:
-        return data.info.note != null
-            ? data.requestParams.amount
-            : data.info.merchant.price;
-      case Message.FAILED:
-        return data.info.merchant.price;
-      default:
-        return data.info.refundAmount;
-    }
   }
 }

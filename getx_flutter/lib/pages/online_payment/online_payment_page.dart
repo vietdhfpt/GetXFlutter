@@ -9,8 +9,8 @@ import 'package:getx_flutter/pages/online_payment/widgets/topup_widget.dart';
 import 'package:getx_flutter/pages/widget_share.dart/topup_button_widget.dart';
 
 class OnlinePaymentPage extends StatelessWidget {
-  final OnlinePaymentController _controller = Get.put(OnlinePaymentController());
-  final _phoneController = TextEditingController();
+  final OnlinePaymentController _controller =
+      Get.put(OnlinePaymentController());
 
   @override
   Widget build(BuildContext context) {
@@ -214,7 +214,7 @@ class OnlinePaymentPage extends StatelessWidget {
             Container(
               height: 45,
               child: TextFormField(
-                controller: _phoneController,
+                controller: _controller.phoneNumberController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   border: new OutlineInputBorder(
@@ -239,100 +239,107 @@ class OnlinePaymentPage extends StatelessWidget {
       bottom: 0,
       left: 0,
       right: 0,
-      child: Container(
-        height: 170,
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: kPaddingTopup / 2,
-            left: kPaddingTopup,
-            right: kPaddingTopup,
-            bottom: kPaddingTopup * 2,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Số lượng:'),
+      child: Obx(() {
+        return Container(
+          height: _controller.isInputQuantity ? 170 : 118,
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: kPaddingTopup / 2,
+              left: kPaddingTopup,
+              right: kPaddingTopup,
+              bottom: kPaddingTopup * 2,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                if (_controller.isInputQuantity)
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          _controller.processCalculateMoney(isIncrement: false);
-                        },
-                        child: Icon(
-                          Icons.remove_circle,
-                          size: 35,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      Container(
-                        height: 30,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          color: appColor,
-                          borderRadius: BorderRadius.circular(kBorderRadius),
-                        ),
-                        child: Center(
-                          child: Obx(() {
-                            return Text(
-                              '${_controller.quantity}',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                                color: Colors.white,
-                              ),
-                            );
-                          }),
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      GestureDetector(
-                        onTap: () {
-                          _controller.processCalculateMoney(isIncrement: true);
-                        },
-                        child: Icon(
-                          Icons.add_circle,
-                          size: 35,
-                          color: Colors.grey,
-                        ),
+                      Text('Số lượng:'),
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              _controller.processCalculateMoney(
+                                  isIncrement: false);
+                            },
+                            child: Icon(
+                              Icons.remove_circle,
+                              size: 35,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          SizedBox(width: 5),
+                          Container(
+                            height: 30,
+                            width: 40,
+                            decoration: BoxDecoration(
+                              color: appColor,
+                              borderRadius:
+                                  BorderRadius.circular(kBorderRadius),
+                            ),
+                            child: Center(
+                              child: Obx(() {
+                                return Text(
+                                  '${_controller.quantity}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    color: Colors.white,
+                                  ),
+                                );
+                              }),
+                            ),
+                          ),
+                          SizedBox(width: 5),
+                          GestureDetector(
+                            onTap: () {
+                              _controller.processCalculateMoney(
+                                  isIncrement: true);
+                            },
+                            child: Icon(
+                              Icons.add_circle,
+                              size: 35,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
-              Divider(
-                height: 2,
-                color: Colors.black38,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Tổng tiền:'),
-                  Obx(() {
-                    return Text(
-                      '${_controller.amount} đ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    );
-                  }),
-                ],
-              ),
-              TopupButtonWidget(
-                title: 'Thanh toán',
-                onTap: () {
-                  _controller.payment();
-                },
-              ),
-            ],
+                if (_controller.isInputQuantity)
+                  Divider(
+                    height: 2,
+                    color: Colors.black38,
+                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Tổng tiền:'),
+                    Obx(() {
+                      return Text(
+                        '${_controller.amount} đ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+                TopupButtonWidget(
+                  title: 'Thanh toán',
+                  onTap: () {
+                    _controller.payment();
+                  },
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

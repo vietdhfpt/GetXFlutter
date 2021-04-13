@@ -34,9 +34,9 @@ class TopupProviderWidget extends StatelessWidget {
                 builder: (controller) {
                   return ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: controller.cratchCards.length,
+                    itemCount: controller.currentlyProviders.length,
                     itemBuilder: (BuildContext context, int index) {
-                      final model = controller.cratchCards[index];
+                      final model = controller.currentlyProviders[index];
                       return GestureDetector(
                         onTap: () {
                           controller.selectedProvider(index);
