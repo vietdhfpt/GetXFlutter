@@ -100,6 +100,13 @@ class OnlinePaymentController extends GetxController {
       if (selectedIndexTopup == 1) 'accountType': accountType,
       if (selectedIndexTopup == 1) 'phoneNumber': phoneNumberController.text,
     };
+
+    if (selectedIndexTopup == 1 &&
+        !GetUtils.isPhoneNumber(phoneNumberController.text)) {
+      SPSnackbar.instance.show(message: 'Số điện thoại không hợp lệ');
+      return;
+    }
+
     Get.to(() => TopupPaymentDetail(), arguments: arguments);
   }
 

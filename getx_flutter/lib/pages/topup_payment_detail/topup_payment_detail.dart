@@ -46,7 +46,6 @@ class TopupPaymentDetail extends StatelessWidget {
                           title: 'Nhà mạng: ',
                           value: '${product.provider}',
                         ),
-                        SizedBox(height: kSpacing),
                         if (_onlinePaymentController.selectedIndexTopup == 1)
                           _buildInfoMobilePay(phoneNumber, accountType),
                         SizedBox(height: kSpacing),
@@ -56,15 +55,16 @@ class TopupPaymentDetail extends StatelessWidget {
                               '${product.productValue - product.finalPrice} đ',
                         ),
                         SizedBox(height: kSpacing),
-                        if (_onlinePaymentController.isInputQuantity)
+                        if (_onlinePaymentController.selectedIndexTopup != 1)
                           buildInfo(
                             title: 'Số lượng: ',
                             value: '$quantity',
                           ),
                         SizedBox(
-                          height: _onlinePaymentController.isInputQuantity
-                              ? kSpacing * 2
-                              : 0,
+                          height:
+                              _onlinePaymentController.selectedIndexTopup != 1
+                                  ? kSpacing
+                                  : 0,
                         ),
                         Divider(height: 1, color: Colors.black38),
                         SizedBox(height: kSpacing),
@@ -103,6 +103,7 @@ class TopupPaymentDetail extends StatelessWidget {
     String result = accountType == 0 ? 'Trả trước' : 'Trả sau';
     return Column(
       children: [
+        SizedBox(height: kSpacing),
         buildInfo(
           title: 'Hình thức: ',
           value: result,
