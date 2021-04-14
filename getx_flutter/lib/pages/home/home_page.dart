@@ -14,7 +14,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Topup'),
       ),
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: DefaultTabController(
         length: _controller.choices.length,
         child: Column(

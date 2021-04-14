@@ -29,33 +29,33 @@ class OnlinePaymentController extends GetxController {
   RxInt _quantity = 1.obs;
   RxInt _accountType = 0.obs;
   RxBool _isInputQuantity = false.obs;
-  var _topups = List<Topup>().obs;
-  var _currentlyProducts = List<Item>().obs;
-  var _currentlyProviders = List<TopupItem>().obs;
+  var _topups = <Topup>[].obs;
+  var _currentlyProducts = <Item>[].obs;
+  var _currentlyProviders = <TopupItem>[].obs;
 
   // Cratch Cards
-  var _viettelCratchCards = List<Item>().obs;
-  var _vinaphoneCratchCards = List<Item>().obs;
-  var _mobifoneCratchCards = List<Item>().obs;
-  var _vietnamobileCratchCards = List<Item>().obs;
-  var _beelineCratchCards = List<Item>().obs;
-  var _cratchCards = List<TopupItem>().obs;
+  var _viettelCratchCards = <Item>[].obs;
+  var _vinaphoneCratchCards = <Item>[].obs;
+  var _mobifoneCratchCards = <Item>[].obs;
+  var _vietnamobileCratchCards = <Item>[].obs;
+  var _beelineCratchCards = <Item>[].obs;
+  var _cratchCards = <TopupItem>[].obs;
 
   // Cratch Cards
-  var _viettelPayMobiles = List<Item>().obs;
-  var _vinaphonePayMobiles = List<Item>().obs;
-  var _mobifonePayMobiles = List<Item>().obs;
-  var _vietnamobilePayMobiles = List<Item>().obs;
-  var _beelinePayMobiles = List<Item>().obs;
-  var _payMobiles = List<TopupItem>().obs;
+  var _viettelPayMobiles = <Item>[].obs;
+  var _vinaphonePayMobiles = <Item>[].obs;
+  var _mobifonePayMobiles = <Item>[].obs;
+  var _vietnamobilePayMobiles = <Item>[].obs;
+  var _beelinePayMobiles = <Item>[].obs;
+  var _payMobiles = <TopupItem>[].obs;
 
   // Cratch Cards
-  var _viettelAdvanceMobiles = List<Item>().obs;
-  var _vinaphoneAdvanceMobiles = List<Item>().obs;
-  var _mobifoneAdvanceMobiles = List<Item>().obs;
-  var _vietnamobileAdvanceMobiles = List<Item>().obs;
-  var _beelineAdvanceMobiles = List<Item>().obs;
-  var _advanceMobiles = List<TopupItem>().obs;
+  var _viettelAdvanceMobiles = <Item>[].obs;
+  var _vinaphoneAdvanceMobiles = <Item>[].obs;
+  var _mobifoneAdvanceMobiles = <Item>[].obs;
+  var _vietnamobileAdvanceMobiles = <Item>[].obs;
+  var _beelineAdvanceMobiles = <Item>[].obs;
+  var _advanceMobiles = <TopupItem>[].obs;
 
   // Properties public
   List<Topup> get topups => _topups;
@@ -112,9 +112,9 @@ class OnlinePaymentController extends GetxController {
 
   void processCalculateMoney({@required bool isIncrement}) {
     if (!isIncrement) {
-      if (_quantity > 1) _quantity.value--;
+      if (_quantity.value > 1) _quantity.value--;
     } else {
-      if (_quantity < 10) _quantity.value++;
+      if (_quantity.value < 10) _quantity.value++;
     }
     _getMoney();
   }
@@ -166,7 +166,7 @@ class OnlinePaymentController extends GetxController {
       default:
         break;
     }
-    // update();
+
     selectedProduct(0);
     _resetQuantity();
     _getMoney();
@@ -181,6 +181,7 @@ class OnlinePaymentController extends GetxController {
 
   void setAccountType(int index) {
     _accountType.value = index;
+    selectedProvider(0);
     update();
   }
 

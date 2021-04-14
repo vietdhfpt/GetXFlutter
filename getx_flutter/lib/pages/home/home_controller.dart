@@ -3,7 +3,7 @@ import 'package:getx_flutter/models/topup_product.dart';
 import 'package:getx_flutter/pages/home/model/choice.dart';
 
 class HomeController extends GetxController with StateMixin<TopupProduct> {
-  var _choices = List<Choice>().obs;
+  var _choices = <Choice>[].obs;
 
   // Properties public
   List<Choice> get choices => _choices;

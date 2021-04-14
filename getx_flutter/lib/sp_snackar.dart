@@ -6,11 +6,11 @@ class SPSnackbar {
 
   void show({
     @required String message,
-    String title = '',
+    String title = 'TETE Thông báo',
     SnackPosition position = SnackPosition.BOTTOM,
   }) {
     Get.snackbar(
-      title.isEmpty ? null : title,
+      title,
       message,
       backgroundColor: Colors.black87,
       colorText: Colors.white,
@@ -22,6 +22,7 @@ class SPSnackbar {
         ),
       ),
       snackPosition: position,
+      animationDuration: Duration(milliseconds: 700),
     );
   }
 }

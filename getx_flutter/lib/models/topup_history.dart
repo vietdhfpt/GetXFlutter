@@ -333,10 +333,13 @@ enum ErrorMessage {
   TARGET_ACCOUNT_INVALID,
   FAIL_BECAUSE_SOFTPIN_IS_NOT_ENOUGH_FOR_REQUEST,
   TELCO_SYSTEM_BUSY,
-  INVALID_SIGNATURE
+  INVALID_SIGNATURE,
+  FAIL_MERCHANT_AMOUNT_LEVEL
 }
 
 final errorMessageValues = EnumValues({
+  "Merchant topup a target or amount level which are not in template":
+      ErrorMessage.FAIL_MERCHANT_AMOUNT_LEVEL,
   "fail because product not in partner template":
       ErrorMessage.FAIL_BECAUSE_PRODUCT_NOT_IN_PARTNER_TEMPLATE,
   "Target account is too short or too long":
